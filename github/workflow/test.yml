@@ -1,0 +1,67 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: sogoj
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_NAME: sogoj
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_HOST: localhost
+      JWT_SECRET: root
+      EMAIL_USER: duducom195@gmail.com
+      EMAIL_PASS: 'rjjh lpos riqs aaee'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Wait for Postgres to be ready
+      run: |
+        until pg_isready -h localhost -p 5432 -U postgres; do
+          echo "Waiting for postgres..."
+          sleep 2
+        done
+
+    - name: Start server
+      run: npm run dev &
+
+    - name: Wait for server to start
+      run: sleep 10
+
+    - name: Run tests
+      run: npm run test
