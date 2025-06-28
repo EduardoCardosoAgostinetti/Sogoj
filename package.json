@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "axios": "^1.10.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "node": "^22.17.0",
+    "nodemailer": "^7.0.3",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.2"
+  },
+  "scripts": {
+    "dev": "nodemon servers.js",
+
+    "friendshipSuccess": "node ./tests/success/friendship.js",
+    "loginSuccess": "node ./tests/success/login.js",
+    "presenceSuccess": "node ./tests/success/presence.js",
+    "registerSuccess": "node ./tests/success/register.js",
+    "codeSuccess": "node ./tests/success/code.js",
+    "loginError": "node ./tests/errors/login.js",
+    "registerError": "node ./tests/errors/register.js",
+    "codeError": "node ./tests/errors/code.js",
+    "friendshipError": "node ./tests/errors/friendship.js",
+    "presenceError": "node ./tests/errors/presence.js",
+    "tests": "npm-run-all registerSuccess codeSuccess loginSuccess friendshipSuccess presenceSuccess registerError codeError loginError friendshipError presenceError"
+
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
